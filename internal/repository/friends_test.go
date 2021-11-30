@@ -7,9 +7,9 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/config"
+	"github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/internal/models"
 	"github.com/stretchr/testify/require"
-	"github.com/vinhnv1/babycrab/config"
-	"github.com/vinhnv1/babycrab/internal/models"
 )
 
 // loadSqlTestFile will be loading a mock testdata

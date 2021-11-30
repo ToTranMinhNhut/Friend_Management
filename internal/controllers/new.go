@@ -1,8 +1,6 @@
 package controllers
 
-import (
-	"github.com/vinhnv1/babycrab/internal/repository"
-)
+import "github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/internal/repository"
 
 type FriendController struct {
 	Repo repository.SpecRepo

@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/vinhnv1/babycrab/internal/models"
+	"github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/internal/models"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"

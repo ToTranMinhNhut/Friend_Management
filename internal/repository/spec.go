@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/vinhnv1/babycrab/internal/models"
+	"github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/internal/models"
 )
 
 // SpecRepo is the interface for repository methods

@@ -7,9 +7,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/internal/models"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
-	"github.com/vinhnv1/babycrab/internal/models"
 )
 
 func TestControllers_GetFriends(t *testing.T) {

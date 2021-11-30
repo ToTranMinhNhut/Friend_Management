@@ -6,10 +6,10 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/config"
+	"github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/internal/controllers"
+	"github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/internal/repository"
 	"github.com/go-chi/chi"
-	"github.com/vinhnv1/babycrab/config"
-	"github.com/vinhnv1/babycrab/internal/controllers"
-	"github.com/vinhnv1/babycrab/internal/repository"
 
 	"github.com/joho/godotenv"
 )

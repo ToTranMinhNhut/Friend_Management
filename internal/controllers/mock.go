@@ -3,8 +3,8 @@ package controllers
 import (
 	"context"
 
+	"github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/internal/models"
 	"github.com/stretchr/testify/mock"
-	"github.com/vinhnv1/babycrab/internal/models"
 )
 
 type SpecRepo struct {
