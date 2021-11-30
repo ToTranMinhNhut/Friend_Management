@@ -1,6 +1,6 @@
 .PHONY: setup run db dbmigrate
 
-APP_NAME := babycrab
+APP_NAME := S3_FriendManagementAPI_NhutTo
 APP_PATH := /${APP_NAME}
 COMPOSE := docker-compose -f docker-compose.yaml
 RUN_COMPOSE = $(COMPOSE) run --rm --service-ports -w $(APP_PATH) $(MOUNT_VOLUME) go

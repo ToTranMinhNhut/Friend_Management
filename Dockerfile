@@ -1,6 +1,6 @@
 FROM golang:1.17 as builder
 
-ARG APP_NAME=babycrab
+ARG APP_NAME=S3_FriendManagementAPI_NhutTo
 ARG CGO_ENABLED=0
 ARG GOOS=linux
 ARG GOARCH=amd64
@@ -15,11 +15,11 @@ RUN make build
 
 FROM alpine:3.11
 
-LABEL description="babycrab is a simple API"
+LABEL description="S3_FriendManagementAPI_NhutTo is a simple API"
 
 RUN apk --no-cache add tzdata ca-certificates
 
-COPY --from=builder /babycrab/serverd /
+COPY --from=builder /S3_FriendManagementAPI_NhutTo/serverd /
 
 CMD ./serverd
 

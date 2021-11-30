@@ -2,18 +2,18 @@ version: "3.5"
 
 services:
   go:
-    container_name: babycrab-go-local
+    container_name: friendmanagement-go-local
     image: golang:1.17
     ports:
       - "8080:8080"    
     environment:
       APP_ENV: dev
-      DATABASE_URL: postgres://babycrab:babycrab@db:5432/babycrab?sslmode=disable
+      DATABASE_URL: postgres://friendmanagement:friendmanagement@db:5432/friendmanagement?sslmode=disable
     volumes:
-      - .:/babycrab:cached
-      - babycrab-go-build-cache:/root/.cache/go-build
+      - .:/S3_FriendManagementAPI_NhutTo:cached
+      - friendmanagement-go-build-cache:/root/.cache/go-build
   db:
-    container_name: babycrab-db-local
+    container_name: friendmanagement-db-local
     image: postgres:12-alpine
     ports:
       - "5432:5432"    
@@ -24,10 +24,10 @@ services:
       timeout: 30s
       retries: 3
     environment:
-      POSTGRES_USER: babycrab
+      POSTGRES_USER: friendmanagement
       POSTGRES_HOST_AUTH_METHOD: trust
   db-migrate:
-    container_name: babycrab-db-migrate-local
+    container_name: friendmanagement-db-migrate-local
     image: migrate/migrate:v4.14.1
     depends_on:
       - db
@@ -36,10 +36,10 @@ services:
     restart: "no"
     entrypoint: ""
     environment:
-      DATABASE_URL: postgres://babycrab:@db:5432/babycrab?sslmode=disable
+      DATABASE_URL: postgres://friendmanagement:@db:5432/friendmanagement?sslmode=disable
  
 volumes:
-  babycrab-go-build-cache:
-    name: babycrab-go-build-cache-dev
+  friendmanagement-go-build-cache:
+    name: friendmanagement-go-build-cache-dev
   migration-files:
-    name: babycrab-migrate-local
+    name: friendmanagement-migrate-local
