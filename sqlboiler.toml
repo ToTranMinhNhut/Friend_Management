@@ -1,0 +1,9 @@
+output   = "internal/models"
+
+[psql]
+  dbname = "babycrab"
+  host   = "127.0.0.1"
+  port   = 5432
+  user   = "babycrab"
+  pass   = ""
+  sslmode= "disable"
