@@ -68,6 +68,7 @@ func (_self DBRepo) GetRecipientEmails(ctx context.Context, senderId int) ([]mod
 	return nonBlockUsers, nil
 }
 
+// Insert a blocking relationship of users into user_block table
 func (_self DBRepo) CreateUserBlock(ctx context.Context, requestorId int, targetId int) error {
 	userBlock := models.UserBlock{
 		RequestorID: requestorId,
@@ -76,6 +77,7 @@ func (_self DBRepo) CreateUserBlock(ctx context.Context, requestorId int, target
 	return userBlock.Insert(ctx, _self.Db, boil.Infer())
 }
 
+// Verify a existing friendship
 func (_self DBRepo) IsExistedFriend(ctx context.Context, userId int, friendId int) (bool, error) {
 	return models.Friends(
 		qm.WhereIn("user_id in ?", userId, friendId),
@@ -83,20 +85,23 @@ func (_self DBRepo) IsExistedFriend(ctx context.Context, userId int, friendId in
 		Exists(ctx, _self.Db)
 }
 
-func (_self DBRepo) IsBlockedFriend(ctx context.Context, userId int, friendId int) (bool, error) {
+// Verify a blocking relationship of users
+func (_self DBRepo) IsBlockedUser(ctx context.Context, userId int, friendId int) (bool, error) {
 	return models.UserBlocks(
 		qm.WhereIn("requestor_id in ?", userId, friendId),
 		qm.AndIn("target_id in ?", userId, friendId)).
 		Exists(ctx, _self.Db)
 }
 
-func (_self DBRepo) IsSubscribedFriend(ctx context.Context, requestorId int, targetId int) (bool, error) {
+// Verify a subscription relationship of users
+func (_self DBRepo) IsSubscribedUser(ctx context.Context, requestorId int, targetId int) (bool, error) {
 	return models.Subscriptions(
 		qm.WhereIn("subscription_requestor_id in ?", requestorId, targetId),
 		qm.AndIn("subscription_target_id in ?", requestorId, targetId)).
 		Exists(ctx, _self.Db)
 }
 
+// Get a user id from users table by email
 func (_self DBRepo) GetUserIDByEmail(ctx context.Context, email string) (int, error) {
 	var userId int
 	user, err := models.Users(qm.Select(models.UserColumns.ID), qm.Where("email = ?", email)).One(ctx, _self.Db)
@@ -106,6 +111,7 @@ func (_self DBRepo) GetUserIDByEmail(ctx context.Context, email string) (int, er
 	return user.ID, nil
 }
 
+// Get list of emails by list of corresponding ids from users table
 func (_self DBRepo) GetEmailsByUserIDs(ctx context.Context, userIDs []int) ([]string, error) {
 	if len(userIDs) == 0 {
 		return []string{}, nil

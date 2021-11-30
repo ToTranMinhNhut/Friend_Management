@@ -66,7 +66,6 @@ func TestControllers_GetFriends(t *testing.T) {
 	}
 }
 
-//TODO
 func TestControllers_CreateFriends(t *testing.T) {
 	tcs := map[string]struct {
 		input          string
@@ -97,7 +96,7 @@ func TestControllers_CreateFriends(t *testing.T) {
 				mockRepo.On("GetUserIDByEmail", mock.Anything, mock.Anything).Return(tc.mockFirstUser.ID, nil),
 				mockRepo.On("GetUserIDByEmail", mock.Anything, mock.Anything).Return(tc.mockSecondUser.ID, nil),
 				mockRepo.On("IsExistedFriend", mock.Anything, mock.Anything, mock.Anything).Return(false, nil),
-				mockRepo.On("IsBlockedFriend", mock.Anything, mock.Anything, mock.Anything).Return(false, nil),
+				mockRepo.On("IsBlockedUser", mock.Anything, mock.Anything, mock.Anything).Return(false, nil),
 				mockRepo.On("CreateFriend", mock.Anything, mock.Anything, mock.Anything).Return(nil),
 			}
 			friendController := NewFriendController(mockRepo)
@@ -114,6 +113,7 @@ func TestControllers_CreateFriends(t *testing.T) {
 		})
 	}
 }
+
 func TestControllers_GetCommonFriends(t *testing.T) {
 	tcs := map[string]struct {
 		input                    string
@@ -184,6 +184,7 @@ func TestControllers_GetCommonFriends(t *testing.T) {
 		})
 	}
 }
+
 func TestControllers_CreateSubcription(t *testing.T) {
 	tcs := map[string]struct {
 		input             string
@@ -213,8 +214,8 @@ func TestControllers_CreateSubcription(t *testing.T) {
 			mockRepo.ExpectedCalls = []*mock.Call{
 				mockRepo.On("GetUserIDByEmail", mock.Anything, mock.Anything).Return(tc.mockRequestorUser.ID, nil),
 				mockRepo.On("GetUserIDByEmail", mock.Anything, mock.Anything).Return(tc.mockTargetUser.ID, nil),
-				mockRepo.On("IsSubscribedFriend", mock.Anything, mock.Anything, mock.Anything).Return(false, nil),
-				mockRepo.On("IsBlockedFriend", mock.Anything, mock.Anything, mock.Anything).Return(false, nil),
+				mockRepo.On("IsSubscribedUser", mock.Anything, mock.Anything, mock.Anything).Return(false, nil),
+				mockRepo.On("IsBlockedUser", mock.Anything, mock.Anything, mock.Anything).Return(false, nil),
 				mockRepo.On("CreateSubscription", mock.Anything, mock.Anything, mock.Anything).Return(nil),
 			}
 			friendController := NewFriendController(mockRepo)
@@ -231,6 +232,7 @@ func TestControllers_CreateSubcription(t *testing.T) {
 		})
 	}
 }
+
 func TestControllers_CreateUserBlocks(t *testing.T) {
 	tcs := map[string]struct {
 		input             string
@@ -260,7 +262,7 @@ func TestControllers_CreateUserBlocks(t *testing.T) {
 			mockRepo.ExpectedCalls = []*mock.Call{
 				mockRepo.On("GetUserIDByEmail", mock.Anything, mock.Anything).Return(tc.mockRequestorUser.ID, nil),
 				mockRepo.On("GetUserIDByEmail", mock.Anything, mock.Anything).Return(tc.mockTargetUser.ID, nil),
-				mockRepo.On("IsBlockedFriend", mock.Anything, mock.Anything, mock.Anything).Return(false, nil),
+				mockRepo.On("IsBlockedUser", mock.Anything, mock.Anything, mock.Anything).Return(false, nil),
 				mockRepo.On("CreateUserBlock", mock.Anything, mock.Anything, mock.Anything).Return(nil),
 			}
 			friendController := NewFriendController(mockRepo)
@@ -277,6 +279,7 @@ func TestControllers_CreateUserBlocks(t *testing.T) {
 		})
 	}
 }
+
 func TestControllers_GetRecipientEmails(t *testing.T) {
 	tcs := map[string]struct {
 		input         string

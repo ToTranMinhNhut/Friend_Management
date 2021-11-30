@@ -64,7 +64,7 @@ func (_self FriendController) CreateFriend(w http.ResponseWriter, r *http.Reques
 	}
 
 	// check blocking between 2 emails
-	isBlocked, err := _self.Repo.IsBlockedFriend(ctx, userId, friendId)
+	isBlocked, err := _self.Repo.IsBlockedUser(ctx, userId, friendId)
 	if err != nil {
 		Respond(w, http.StatusInternalServerError, MsgError(err))
 		return
@@ -115,7 +115,7 @@ func (_self FriendController) GetFriends(w http.ResponseWriter, r *http.Request)
 	Respond(w, http.StatusOK, MsgGetFriendsOk(friendEmails, len(friendEmails)))
 }
 
-//TODO
+// Get common friends of 2 users
 func (_self FriendController) GetCommonFriends(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	friendReq := FriendRequest{}
@@ -170,6 +170,7 @@ func (_self FriendController) GetCommonFriends(w http.ResponseWriter, r *http.Re
 	Respond(w, http.StatusOK, MsgGetFriendsOk(commonFriends, len(commonFriends)))
 }
 
+// Create a subscription relationship of users
 func (_self FriendController) CreateSubcription(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	//Decode request body
@@ -198,7 +199,7 @@ func (_self FriendController) CreateSubcription(w http.ResponseWriter, r *http.R
 	}
 
 	// Check subscription relationship is exists
-	isSubscribed, err := _self.Repo.IsSubscribedFriend(ctx, requestorId, targetId)
+	isSubscribed, err := _self.Repo.IsSubscribedUser(ctx, requestorId, targetId)
 	if err != nil {
 		Respond(w, http.StatusInternalServerError, MsgError(err))
 		return
@@ -209,7 +210,7 @@ func (_self FriendController) CreateSubcription(w http.ResponseWriter, r *http.R
 	}
 
 	// check blocking between 2 user
-	isBlocked, err := _self.Repo.IsBlockedFriend(ctx, requestorId, targetId)
+	isBlocked, err := _self.Repo.IsBlockedUser(ctx, requestorId, targetId)
 	if err != nil {
 		Respond(w, http.StatusInternalServerError, MsgError(err))
 		return
@@ -229,6 +230,7 @@ func (_self FriendController) CreateSubcription(w http.ResponseWriter, r *http.R
 	Respond(w, http.StatusOK, MsgOK())
 }
 
+// Create a blocking relationship of users
 func (_self FriendController) CreateUserBlock(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	requestorReq := RequestorRequest{}
@@ -256,7 +258,7 @@ func (_self FriendController) CreateUserBlock(w http.ResponseWriter, r *http.Req
 	}
 
 	// check blocking between 2 user
-	isBlocked, err := _self.Repo.IsBlockedFriend(ctx, requestorId, targetId)
+	isBlocked, err := _self.Repo.IsBlockedUser(ctx, requestorId, targetId)
 	if err != nil {
 		Respond(w, http.StatusInternalServerError, MsgError(err))
 		return
@@ -277,6 +279,7 @@ func (_self FriendController) CreateUserBlock(w http.ResponseWriter, r *http.Req
 
 }
 
+// Get all of recipients who are friend, subscriber, and mention user without blocking by user
 func (_self FriendController) GetRecipientEmails(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	recipient := RecipientsRequest{}
@@ -324,6 +327,7 @@ func (_self FriendController) GetRecipientEmails(w http.ResponseWriter, r *http.
 	Respond(w, http.StatusOK, MsgGetEmailReceiversOk(result))
 }
 
+// Get emails of users who are not being blocked by user
 func (_self FriendController) getFriendEmailsWithoutBlocking(ctx context.Context, userId int) ([]string, error) {
 	// get friends
 	friendSlice, err := _self.Repo.GetFriendsByID(ctx, userId)

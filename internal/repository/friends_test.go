@@ -57,6 +57,7 @@ func TestRepository_CreateFriend(t *testing.T) {
 		})
 	}
 }
+
 func TestRepository_IsExistedFriend(t *testing.T) {
 	tcs := map[string]struct {
 		userId    int
@@ -96,7 +97,8 @@ func TestRepository_IsExistedFriend(t *testing.T) {
 		})
 	}
 }
-func TestRepository_IsBlockedFriend(t *testing.T) {
+
+func TestRepository_IsBlockedUser(t *testing.T) {
 	tcs := map[string]struct {
 		userId    int
 		friendId  int
@@ -124,7 +126,7 @@ func TestRepository_IsBlockedFriend(t *testing.T) {
 
 			// load testdata
 			loadSqlTestFile(t, db, "testdata/friends.sql")
-			result, err := repo.IsBlockedFriend(ctx, tc.userId, tc.friendId)
+			result, err := repo.IsBlockedUser(ctx, tc.userId, tc.friendId)
 
 			if tc.expError != nil {
 				require.EqualError(t, err, tc.expError.Error())
@@ -135,6 +137,7 @@ func TestRepository_IsBlockedFriend(t *testing.T) {
 		})
 	}
 }
+
 func TestRepository_GetFriendsByID(t *testing.T) {
 	tcs := map[string]struct {
 		userId    int
@@ -172,6 +175,7 @@ func TestRepository_GetFriendsByID(t *testing.T) {
 		})
 	}
 }
+
 func TestRepository_GetUserBlocksByID(t *testing.T) {
 	tcs := map[string]struct {
 		userId    int
@@ -210,44 +214,6 @@ func TestRepository_GetUserBlocksByID(t *testing.T) {
 		})
 	}
 }
-
-/* func TestRepository_GetCommonFriends(t *testing.T) {
-	tcs := map[string]struct {
-		firstUserId  int
-		secondUserId int
-		expResult    []string
-		expError     error
-	}{
-		"success with adding input of userIds": {
-			firstUserId:  100,
-			secondUserId: 101,
-			expResult:    []string{"common@example.com"},
-		},
-		"query by an unknown input userIds (empty)": {
-			firstUserId:  99,
-			secondUserId: 100,
-		},
-	}
-
-	for desc, tc := range tcs {
-		t.Run(desc, func(t *testing.T) {
-			ctx := context.Background()
-			db, err := config.NewDatabase()
-			require.NoError(t, err)
-			repo := NewDBRepo(db)
-
-			// load testdata
-			loadSqlTestFile(t, db, "testdata/friends.sql")
-			result, err := repo.GetCommonFriends(ctx, tc.firstUserId, tc.secondUserId)
-
-			require.NoError(t, err)
-			require.Equal(t, len(tc.expResult), len(result))
-			for i, ss := range tc.expResult {
-				require.Equal(t, ss, result[i])
-			}
-		})
-	}
-} */
 
 func TestRepository_CreateSubscription(t *testing.T) {
 	tcs := map[string]struct {
@@ -388,7 +354,7 @@ func TestRepository_IsSubscribedFriend(t *testing.T) {
 
 			// load testdata
 			loadSqlTestFile(t, db, "testdata/friends.sql")
-			result, err := repo.IsSubscribedFriend(ctx, tc.requestorId, tc.targetId)
+			result, err := repo.IsSubscribedUser(ctx, tc.requestorId, tc.targetId)
 
 			if tc.expError != nil {
 				require.EqualError(t, err, tc.expError.Error())

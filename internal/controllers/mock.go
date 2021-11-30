@@ -37,17 +37,6 @@ func (m SpecRepo) GetUserBlocksByID(ctx context.Context, userId int) (models.Use
 	return r1, r2
 }
 
-/* func (m SpecRepo) GetCommonFriends(ctx context.Context, firstUser int, secondUser int) (models.FriendSlice, error) {
-	args := m.Called(ctx, firstUser, secondUser)
-	r1 := args.Get(0).(models.FriendSlice)
-
-	var r2 error
-	if args.Get(1) != nil {
-		r2 = args.Get(1).(error)
-	}
-	return r1, r2
-} */
-
 func (m SpecRepo) CreateSubscription(ctx context.Context, requestorId int, targetId int) error {
 	args := m.Called(ctx, requestorId, targetId)
 	var r error
@@ -88,7 +77,7 @@ func (m SpecRepo) IsExistedFriend(ctx context.Context, userId int, friendId int)
 	return r1, r2
 }
 
-func (m SpecRepo) IsBlockedFriend(ctx context.Context, userId int, friendId int) (bool, error) {
+func (m SpecRepo) IsBlockedUser(ctx context.Context, userId int, friendId int) (bool, error) {
 	args := m.Called(ctx, userId, friendId)
 	r1 := args.Get(0).(bool)
 
@@ -99,7 +88,7 @@ func (m SpecRepo) IsBlockedFriend(ctx context.Context, userId int, friendId int)
 	return r1, r2
 }
 
-func (m SpecRepo) IsSubscribedFriend(ctx context.Context, requestorId int, targetId int) (bool, error) {
+func (m SpecRepo) IsSubscribedUser(ctx context.Context, requestorId int, targetId int) (bool, error) {
 	args := m.Called(ctx, requestorId, targetId)
 	r1 := args.Get(0).(bool)
 

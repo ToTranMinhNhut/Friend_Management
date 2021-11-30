@@ -17,6 +17,7 @@ func isValidEmail(email string) (bool, error) {
 	return true, nil
 }
 
+// Validate to body of friend request
 func (_self FriendRequest) Validate() error {
 	if _self.Emails == nil && len(_self.Emails) == 0 {
 		return ErrBodyRequestEmpty
@@ -38,6 +39,7 @@ func (_self FriendRequest) Validate() error {
 	return nil
 }
 
+// Validate to body of user request
 func (_self UserRequest) Validate() error {
 	if _self.Email == "" {
 		return ErrBodyRequestEmpty
@@ -49,6 +51,7 @@ func (_self UserRequest) Validate() error {
 	return nil
 }
 
+// Validate to body of requestor request
 func (_self RequestorRequest) Validate() error {
 	if _self.Requestor == "" && _self.Target == "" {
 		return ErrBodyRequestEmpty
@@ -78,6 +81,7 @@ func (_self RequestorRequest) Validate() error {
 	return nil
 }
 
+// Validate to body of recipient request
 func (_self RecipientsRequest) Validate() error {
 	if _self.Sender == "" && _self.Text == "" {
 		return ErrBodyRequestEmpty
@@ -97,6 +101,7 @@ func (_self RecipientsRequest) Validate() error {
 	return nil
 }
 
+// Spit emails in a text
 func GetMentionedEmailFromText(text string) []string {
 	regex := regexp.MustCompile(EmailRegex)
 
