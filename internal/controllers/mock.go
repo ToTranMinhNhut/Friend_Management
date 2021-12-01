@@ -116,3 +116,14 @@ func (m SpecRepo) GetEmailsByUserIDs(ctx context.Context, userIDs []int) ([]stri
 	}
 	return r1, r2
 }
+
+func (m SpecRepo) GetUsers(ctx context.Context) (models.UserSlice, error) {
+	args := m.Called(ctx)
+	r1 := args.Get(0).(models.UserSlice)
+
+	var r2 error
+	if args.Get(1) != nil {
+		r2 = args.Get(1).(error)
+	}
+	return r1, r2
+}

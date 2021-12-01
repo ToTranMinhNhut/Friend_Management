@@ -324,3 +324,48 @@ func TestControllers_GetRecipientEmails(t *testing.T) {
 		})
 	}
 }
+
+func TestControllers_GetUsers(t *testing.T) {
+	tcs := map[string]struct {
+		input         string
+		expResult     string
+		expError      error
+		mockUsers     models.UserSlice
+		mockRecipient models.User
+	}{
+		"success with an empty input": {
+			mockUsers: models.UserSlice{
+				&models.User{Name: "john", Email: "john@example.com"},
+				&models.User{Name: "andy", Email: "andy@example.com"},
+			},
+			expResult: `{"count":2,"success":true,"users":["john@example.com","andy@example.com"]}`,
+		},
+		"failed with an unknow format input": {
+			input:    `aaa`,
+			expError: errors.New(`{"message":"Body request invalid format","success":false}`),
+		},
+	}
+
+	for desc, tc := range tcs {
+		t.Run(desc, func(t *testing.T) {
+			req, err := http.NewRequest("GET", "/v1/users", bytes.NewBuffer([]byte(tc.input)))
+			require.NoError(t, err)
+
+			var mockRepo SpecRepo
+			mockRepo.ExpectedCalls = []*mock.Call{
+				mockRepo.On("GetUsers", mock.Anything).Return(tc.mockUsers, nil),
+			}
+			friendController := NewFriendController(mockRepo)
+			handler := http.HandlerFunc(friendController.GetUsers)
+			rr := httptest.NewRecorder()
+			handler.ServeHTTP(rr, req)
+
+			if tc.expError != nil {
+				require.EqualError(t, tc.expError, rr.Body.String())
+			} else {
+				require.NoError(t, err)
+				require.Equal(t, tc.expResult, rr.Body.String())
+			}
+		})
+	}
+}

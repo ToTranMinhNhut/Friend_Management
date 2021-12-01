@@ -49,7 +49,7 @@ func initRoutes(db *sql.DB) *chi.Mux {
 	r.Use(httplog.RequestLogger(logger))
 
 	r.Route("/v1", func(route chi.Router) {
-		//route.Get("/users", friendController.GetUsers)
+		route.Get("/users", friendController.GetUsers)
 		route.Post("/friends", friendController.CreateFriend)
 		route.Get("/friends", friendController.GetFriends)
 		route.Get("/recipients", friendController.GetRecipientEmails)

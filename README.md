@@ -18,7 +18,25 @@ make teardown
 ```
 
 ## API information
-1 - Create friend
+1 - Get users
+- GET: http://localhost:8080/v1/users
+- Parameter request: none
+- Success with status code: 200 OK
+```
+{
+    "count": 5,
+    "success": true,
+    "users": [
+        "john@example.com",
+        "andy@example.com",
+        "common@example.com",
+        "lisa@example.com",
+        "kate@example.com"
+    ]
+}
+```
+
+2 - Create friend
 - POST: http://localhost:8080/v1/friends
 - Parameter request:
 ```
@@ -37,7 +55,7 @@ make teardown
 }
 ```
 
-2 - List Friends
+3 - List Friends
 - GET: http://localhost:8080/v1/friends
 - Parameter request:
 ```
@@ -58,7 +76,7 @@ make teardown
 }
 ```
 
-3 - Get common friends
+4 - Get common friends
 - GET: http://localhost:8080/v1/commonFriends
 - Parameter request:
 ```
@@ -81,7 +99,7 @@ make teardown
 }
 ```
 
-4 - Create subscription
+5 - Create subscription
 - POST: http://localhost:8080/v1/subscription
 - Parameter request:
 ```
@@ -98,7 +116,7 @@ make teardown
 }
 ```
 
-5 - Create user block
+6 - Create user block
 - POST: http://localhost:8080/v1/blocking
 - Parameter request:
 ```
@@ -115,7 +133,7 @@ make teardown
 }
 ```
 
-6 - Get Recipients
+7 - Get Recipients
 - GET: http://localhost:8080 /v1/recipients
 - Parameter request:
 ```
@@ -138,7 +156,6 @@ make teardown
 
 ## Unit Test results
 
-Creating s3_friendmanagementapi_nhutto_go_run ... done
 ?   	github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo	[no test files]
 ?   	github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/config	[no test files]
 === RUN   TestControllers_GetFriends
@@ -177,74 +194,84 @@ Creating s3_friendmanagementapi_nhutto_go_run ... done
 --- PASS: TestControllers_GetRecipientEmails (0.00s)
     --- PASS: TestControllers_GetRecipientEmails/success_with_an_input (0.00s)
     --- PASS: TestControllers_GetRecipientEmails/failed_with_an_unknow_format_input (0.00s)
+=== RUN   TestControllers_GetUsers
+=== RUN   TestControllers_GetUsers/success_with_an_empty_input
+=== RUN   TestControllers_GetUsers/failed_with_an_unknow_format_input
+--- PASS: TestControllers_GetUsers (0.00s)
+    --- PASS: TestControllers_GetUsers/success_with_an_empty_input (0.00s)
+    --- PASS: TestControllers_GetUsers/failed_with_an_unknow_format_input (0.00s)
 PASS
-ok  	github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/internal/controllers	(cached)
+ok  	github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/internal/controllers	0.012s
 ?   	github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/internal/models	[no test files]
 === RUN   TestRepository_CreateFriend
 === RUN   TestRepository_CreateFriend/success_with_adding_input_of_userIds
 === RUN   TestRepository_CreateFriend/query_by_an_unknown_input_userIds
---- PASS: TestRepository_CreateFriend (0.12s)
+--- PASS: TestRepository_CreateFriend (0.10s)
     --- PASS: TestRepository_CreateFriend/success_with_adding_input_of_userIds (0.06s)
     --- PASS: TestRepository_CreateFriend/query_by_an_unknown_input_userIds (0.05s)
 === RUN   TestRepository_IsExistedFriend
-=== RUN   TestRepository_IsExistedFriend/query_by_an_unknown_input_userIds_(empty)
 === RUN   TestRepository_IsExistedFriend/success_with_adding_input_of_userIds
---- PASS: TestRepository_IsExistedFriend (0.11s)
-    --- PASS: TestRepository_IsExistedFriend/query_by_an_unknown_input_userIds_(empty) (0.05s)
-    --- PASS: TestRepository_IsExistedFriend/success_with_adding_input_of_userIds (0.06s)
-=== RUN   TestRepository_IsBlockedFriend
-=== RUN   TestRepository_IsBlockedFriend/success_with_adding_input_of_userIds
-=== RUN   TestRepository_IsBlockedFriend/query_by_an_unknown_input_userIds_(empty)
---- PASS: TestRepository_IsBlockedFriend (0.11s)
-    --- PASS: TestRepository_IsBlockedFriend/success_with_adding_input_of_userIds (0.05s)
-    --- PASS: TestRepository_IsBlockedFriend/query_by_an_unknown_input_userIds_(empty) (0.05s)
+=== RUN   TestRepository_IsExistedFriend/query_by_an_unknown_input_userIds
+--- PASS: TestRepository_IsExistedFriend (0.09s)
+    --- PASS: TestRepository_IsExistedFriend/success_with_adding_input_of_userIds (0.05s)
+    --- PASS: TestRepository_IsExistedFriend/query_by_an_unknown_input_userIds (0.04s)
+=== RUN   TestRepository_IsBlockedUser
+=== RUN   TestRepository_IsBlockedUser/success_with_adding_input_of_userIds
+=== RUN   TestRepository_IsBlockedUser/query_by_an_unknown_input_userIds
+--- PASS: TestRepository_IsBlockedUser (0.09s)
+    --- PASS: TestRepository_IsBlockedUser/success_with_adding_input_of_userIds (0.05s)
+    --- PASS: TestRepository_IsBlockedUser/query_by_an_unknown_input_userIds (0.05s)
 === RUN   TestRepository_GetFriendsByID
-=== RUN   TestRepository_GetFriendsByID/query_by_an_unknown_input_userIds_(empty)
-=== RUN   TestRepository_GetFriendsByID/success_with_adding_input_of_userIds
---- PASS: TestRepository_GetFriendsByID (0.11s)
-    --- PASS: TestRepository_GetFriendsByID/query_by_an_unknown_input_userIds_(empty) (0.05s)
-    --- PASS: TestRepository_GetFriendsByID/success_with_adding_input_of_userIds (0.06s)
+=== RUN   TestRepository_GetFriendsByID/query_by_an_unknown_input_userId
+=== RUN   TestRepository_GetFriendsByID/success_with_adding_input_of_userId
+--- PASS: TestRepository_GetFriendsByID (0.09s)
+    --- PASS: TestRepository_GetFriendsByID/query_by_an_unknown_input_userId (0.04s)
+    --- PASS: TestRepository_GetFriendsByID/success_with_adding_input_of_userId (0.04s)
 === RUN   TestRepository_GetUserBlocksByID
-=== RUN   TestRepository_GetUserBlocksByID/query_by_an_unknown_input_userIds_(empty)
-=== RUN   TestRepository_GetUserBlocksByID/success_with_adding_input_of_userIds
---- PASS: TestRepository_GetUserBlocksByID (0.10s)
-    --- PASS: TestRepository_GetUserBlocksByID/query_by_an_unknown_input_userIds_(empty) (0.05s)
-    --- PASS: TestRepository_GetUserBlocksByID/success_with_adding_input_of_userIds (0.05s)
+=== RUN   TestRepository_GetUserBlocksByID/query_by_an_unknown_input_userId
+=== RUN   TestRepository_GetUserBlocksByID/success_with_adding_input_of_userId
+--- PASS: TestRepository_GetUserBlocksByID (0.07s)
+    --- PASS: TestRepository_GetUserBlocksByID/query_by_an_unknown_input_userId (0.04s)
+    --- PASS: TestRepository_GetUserBlocksByID/success_with_adding_input_of_userId (0.04s)
 === RUN   TestRepository_CreateSubscription
 === RUN   TestRepository_CreateSubscription/success_with_adding_input_of_userIds
-=== RUN   TestRepository_CreateSubscription/query_by_an_unknown_input_userIds_(empty)
---- PASS: TestRepository_CreateSubscription (0.17s)
-    --- PASS: TestRepository_CreateSubscription/success_with_adding_input_of_userIds (0.07s)
-    --- PASS: TestRepository_CreateSubscription/query_by_an_unknown_input_userIds_(empty) (0.10s)
+=== RUN   TestRepository_CreateSubscription/query_by_an_unknown_input_userIds
+--- PASS: TestRepository_CreateSubscription (0.08s)
+    --- PASS: TestRepository_CreateSubscription/success_with_adding_input_of_userIds (0.04s)
+    --- PASS: TestRepository_CreateSubscription/query_by_an_unknown_input_userIds (0.04s)
 === RUN   TestRepository_GetRecipientEmails
-=== RUN   TestRepository_GetRecipientEmails/query_by_an_unknown_input_userIds_(empty)
-=== RUN   TestRepository_GetRecipientEmails/success_with_adding_input_of_userIds
---- PASS: TestRepository_GetRecipientEmails (0.18s)
-    --- PASS: TestRepository_GetRecipientEmails/query_by_an_unknown_input_userIds_(empty) (0.10s)
-    --- PASS: TestRepository_GetRecipientEmails/success_with_adding_input_of_userIds (0.09s)
+=== RUN   TestRepository_GetRecipientEmails/query_by_an_unknown_input_userId
+=== RUN   TestRepository_GetRecipientEmails/success_with_adding_input_of_userId
+--- PASS: TestRepository_GetRecipientEmails (0.08s)
+    --- PASS: TestRepository_GetRecipientEmails/query_by_an_unknown_input_userId (0.04s)
+    --- PASS: TestRepository_GetRecipientEmails/success_with_adding_input_of_userId (0.04s)
 === RUN   TestRepository_CreateUserBlock
+=== RUN   TestRepository_CreateUserBlock/query_by_an_unknown_input_userIds
 === RUN   TestRepository_CreateUserBlock/success_with_adding_input_of_userIds
-=== RUN   TestRepository_CreateUserBlock/query_by_an_unknown_input_userIds_(empty)
---- PASS: TestRepository_CreateUserBlock (0.11s)
-    --- PASS: TestRepository_CreateUserBlock/success_with_adding_input_of_userIds (0.05s)
-    --- PASS: TestRepository_CreateUserBlock/query_by_an_unknown_input_userIds_(empty) (0.05s)
+--- PASS: TestRepository_CreateUserBlock (0.08s)
+    --- PASS: TestRepository_CreateUserBlock/query_by_an_unknown_input_userIds (0.04s)
+    --- PASS: TestRepository_CreateUserBlock/success_with_adding_input_of_userIds (0.04s)
 === RUN   TestRepository_IsSubscribedFriend
 === RUN   TestRepository_IsSubscribedFriend/success_with_adding_input_of_userIds
-=== RUN   TestRepository_IsSubscribedFriend/query_by_an_unknown_input_userIds_(empty)
---- PASS: TestRepository_IsSubscribedFriend (0.10s)
-    --- PASS: TestRepository_IsSubscribedFriend/success_with_adding_input_of_userIds (0.05s)
-    --- PASS: TestRepository_IsSubscribedFriend/query_by_an_unknown_input_userIds_(empty) (0.05s)
+=== RUN   TestRepository_IsSubscribedFriend/query_by_an_unknown_input_userIds
+--- PASS: TestRepository_IsSubscribedFriend (0.08s)
+    --- PASS: TestRepository_IsSubscribedFriend/success_with_adding_input_of_userIds (0.04s)
+    --- PASS: TestRepository_IsSubscribedFriend/query_by_an_unknown_input_userIds (0.04s)
 === RUN   TestRepository_GetUserIDByEmail
-=== RUN   TestRepository_GetUserIDByEmail/success_with_adding_input_of_userIds
-=== RUN   TestRepository_GetUserIDByEmail/query_by_an_unknown_input_userIds_(empty)
---- PASS: TestRepository_GetUserIDByEmail (0.11s)
-    --- PASS: TestRepository_GetUserIDByEmail/success_with_adding_input_of_userIds (0.07s)
-    --- PASS: TestRepository_GetUserIDByEmail/query_by_an_unknown_input_userIds_(empty) (0.04s)
+=== RUN   TestRepository_GetUserIDByEmail/query_by_an_unknown_input_email
+=== RUN   TestRepository_GetUserIDByEmail/success_with_adding_input_of_email
+--- PASS: TestRepository_GetUserIDByEmail (0.07s)
+    --- PASS: TestRepository_GetUserIDByEmail/query_by_an_unknown_input_email (0.04s)
+    --- PASS: TestRepository_GetUserIDByEmail/success_with_adding_input_of_email (0.04s)
 === RUN   TestRepository_GetEmailsByUserIDs
-=== RUN   TestRepository_GetEmailsByUserIDs/query_by_an_unknown_input_userIds_(empty)
 === RUN   TestRepository_GetEmailsByUserIDs/success_with_adding_input_of_userIds
---- PASS: TestRepository_GetEmailsByUserIDs (0.11s)
-    --- PASS: TestRepository_GetEmailsByUserIDs/query_by_an_unknown_input_userIds_(empty) (0.06s)
-    --- PASS: TestRepository_GetEmailsByUserIDs/success_with_adding_input_of_userIds (0.05s)
+=== RUN   TestRepository_GetEmailsByUserIDs/query_by_an_unknown_input_userIds
+--- PASS: TestRepository_GetEmailsByUserIDs (0.08s)
+    --- PASS: TestRepository_GetEmailsByUserIDs/success_with_adding_input_of_userIds (0.03s)
+    --- PASS: TestRepository_GetEmailsByUserIDs/query_by_an_unknown_input_userIds (0.04s)
+=== RUN   TestRepository_GetUsers
+=== RUN   TestRepository_GetUsers/successfully_get_all_users
+--- PASS: TestRepository_GetUsers (0.04s)
+    --- PASS: TestRepository_GetUsers/successfully_get_all_users (0.04s)
 PASS
-ok  	github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/internal/repository	(cached)
+ok  	github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/internal/repository

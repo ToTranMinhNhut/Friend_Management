@@ -128,3 +128,8 @@ func (_self DBRepo) GetEmailsByUserIDs(ctx context.Context, userIDs []int) ([]st
 	}
 	return emails, nil
 }
+
+// Get all users from users table
+func (_self DBRepo) GetUsers(ctx context.Context) (models.UserSlice, error) {
+	return models.Users().All(ctx, _self.Db)
+}

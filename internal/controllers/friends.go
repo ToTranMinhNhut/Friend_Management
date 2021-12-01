@@ -375,3 +375,25 @@ func (_self FriendController) getFriendEmailsWithoutBlocking(ctx context.Context
 	}
 	return emails, nil
 }
+
+// Get all of users
+func (_self FriendController) GetUsers(w http.ResponseWriter, r *http.Request) {
+	ctx := context.Background()
+	if r.ContentLength != 0 {
+		Respond(w, http.StatusBadRequest, MsgError(ErrBodyRequestInvalid))
+		return
+	}
+
+	users, err := _self.Repo.GetUsers(ctx)
+	if err != nil {
+		Respond(w, http.StatusInternalServerError, MsgError(err))
+		return
+	}
+
+	emails := []string{}
+	for _, user := range users {
+		emails = append(emails, user.Email)
+	}
+
+	Respond(w, http.StatusOK, MsgGetAllUsersOk(emails, len(users)))
+}

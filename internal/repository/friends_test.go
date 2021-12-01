@@ -70,7 +70,7 @@ func TestRepository_IsExistedFriend(t *testing.T) {
 			friendId:  102,
 			expResult: true,
 		},
-		"query by an unknown input userIds (empty)": {
+		"query by an unknown input userIds": {
 			userId:    100,
 			friendId:  99,
 			expResult: false,
@@ -110,7 +110,7 @@ func TestRepository_IsBlockedUser(t *testing.T) {
 			friendId:  103,
 			expResult: true,
 		},
-		"query by an unknown input userIds (empty)": {
+		"query by an unknown input userIds": {
 			userId:    100,
 			friendId:  99,
 			expResult: false,
@@ -144,13 +144,13 @@ func TestRepository_GetFriendsByID(t *testing.T) {
 		expResult models.FriendSlice
 		expError  error
 	}{
-		"success with adding input of userIds": {
+		"success with adding input of userId": {
 			userId: 100,
 			expResult: models.FriendSlice{
 				&models.Friend{UserID: 100, FriendID: 102},
 			},
 		},
-		"query by an unknown input userIds (empty)": {
+		"query by an unknown input userId": {
 			userId:    99,
 			expResult: nil,
 		},
@@ -182,14 +182,14 @@ func TestRepository_GetUserBlocksByID(t *testing.T) {
 		expResult models.UserBlockSlice
 		expError  error
 	}{
-		"success with adding input of userIds": {
+		"success with adding input of userId": {
 			userId: 100,
 			expResult: models.UserBlockSlice{
 				&models.UserBlock{RequestorID: 100, TargetID: 103},
 				&models.UserBlock{RequestorID: 100, TargetID: 104},
 			},
 		},
-		"query by an unknown input userIds (empty)": {
+		"query by an unknown input userId": {
 			userId:    99,
 			expResult: nil,
 		},
@@ -225,7 +225,7 @@ func TestRepository_CreateSubscription(t *testing.T) {
 			requestorId: 102,
 			targetId:    103,
 		},
-		"query by an unknown input userIds (empty)": {
+		"query by an unknown input userIds": {
 			requestorId: 99,
 			targetId:    100,
 			expError:    errors.New("models: unable to insert into subscriptions: pq: insert or update on table \"subscriptions\" violates foreign key constraint \"subscriptions_subscription_requestor_id_fkey\""),
@@ -258,13 +258,13 @@ func TestRepository_GetRecipientEmails(t *testing.T) {
 		expResult []models.User
 		expError  error
 	}{
-		"success with adding input of userIds": {
+		"success with adding input of userId": {
 			senderId: 100,
 			expResult: []models.User{
 				{Email: "common@example.com"},
 			},
 		},
-		"query by an unknown input userIds (empty)": {
+		"query by an unknown input userId": {
 			senderId: 99,
 		},
 	}
@@ -299,7 +299,7 @@ func TestRepository_CreateUserBlock(t *testing.T) {
 			requestorId: 100,
 			targetId:    101,
 		},
-		"query by an unknown input userIds (empty)": {
+		"query by an unknown input userIds": {
 			requestorId: 99,
 			targetId:    101,
 			expError:    errors.New("models: unable to insert into user_blocks: pq: insert or update on table \"user_blocks\" violates foreign key constraint \"user_blocks_requestor_id_fkey\""),
@@ -338,7 +338,7 @@ func TestRepository_IsSubscribedFriend(t *testing.T) {
 			targetId:    103,
 			expResult:   true,
 		},
-		"query by an unknown input userIds (empty)": {
+		"query by an unknown input userIds": {
 			requestorId: 100,
 			targetId:    99,
 			expResult:   false,
@@ -372,11 +372,11 @@ func TestRepository_GetUserIDByEmail(t *testing.T) {
 		expResult int
 		expError  error
 	}{
-		"success with adding input of userIds": {
+		"success with adding input of email": {
 			email:     "john@example.com",
 			expResult: 100,
 		},
-		"query by an unknown input userIds (empty)": {
+		"query by an unknown input email": {
 			email:    "test@example.com",
 			expError: errors.New("sql: no rows in result set"),
 		},
@@ -413,7 +413,7 @@ func TestRepository_GetEmailsByUserIDs(t *testing.T) {
 			userIds:   []int{100, 101},
 			expResult: []string{"john@example.com", "andy@example.com"},
 		},
-		"query by an unknown input userIds (empty)": {
+		"query by an unknown input userIds": {
 			userIds:  []int{99},
 			expError: errors.New("sql: no rows in result set"),
 		},
@@ -434,6 +434,41 @@ func TestRepository_GetEmailsByUserIDs(t *testing.T) {
 			require.Equal(t, len(tc.expResult), len(result))
 			for i, ss := range tc.expResult {
 				require.Equal(t, ss, result[i])
+			}
+		})
+	}
+}
+
+func TestRepository_GetUsers(t *testing.T) {
+	tcs := map[string]struct {
+		expResult models.UserSlice
+		expError  error
+	}{
+		"successfully get all users": {
+			expResult: models.UserSlice{
+				&models.User{Name: "john", Email: "john@example.com"},
+				&models.User{Name: "andy", Email: "andy@example.com"},
+				&models.User{Name: "common", Email: "common@example.com"},
+				&models.User{Name: "lisa", Email: "lisa@example.com"},
+				&models.User{Name: "kate", Email: "kate@example.com"},
+			},
+		},
+	}
+
+	for desc, tc := range tcs {
+		t.Run(desc, func(t *testing.T) {
+			ctx := context.Background()
+			db, err := config.NewDatabase()
+			require.NoError(t, err)
+			repo := NewDBRepo(db)
+
+			// load testdata
+			loadSqlTestFile(t, db, "testdata/friends.sql")
+			result, err := repo.GetUsers(ctx)
+			require.NoError(t, err)
+			require.Equal(t, len(tc.expResult), len(result))
+			for i, ss := range tc.expResult {
+				require.Equal(t, ss.Email, result[i].Email)
 			}
 		})
 	}

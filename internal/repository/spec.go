@@ -19,4 +19,5 @@ type SpecRepo interface {
 	IsSubscribedUser(ctx context.Context, requestorId int, targetId int) (bool, error)
 	GetUserIDByEmail(ctx context.Context, email string) (int, error)
 	GetEmailsByUserIDs(ctx context.Context, userIDs []int) ([]string, error)
+	GetUsers(ctx context.Context) (models.UserSlice, error)
 }

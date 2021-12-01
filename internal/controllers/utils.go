@@ -133,6 +133,10 @@ func MsgGetEmailReceiversOk(emails []string) interface{} {
 	return map[string]interface{}{"recipients": emails, "success": true}
 }
 
+func MsgGetAllUsersOk(users []string, count int) interface{} {
+	return map[string]interface{}{"count": count, "users": users, "success": true}
+}
+
 func Respond(w http.ResponseWriter, statusCode int, payload interface{}) {
 	response, _ := json.Marshal(payload)
 	w.Header().Add("Content-Type", "application/json")
