@@ -10,6 +10,7 @@ import (
 	"github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/internal/controllers"
 	"github.com/ToTranMinhNhut/S3_FriendManagementAPI_NhutTo/internal/repository"
 	"github.com/go-chi/chi"
+	"github.com/go-chi/httplog"
 
 	"github.com/joho/godotenv"
 )
@@ -41,6 +42,11 @@ func initRoutes(db *sql.DB) *chi.Mux {
 	r := chi.NewRouter()
 	dbRepo := repository.NewDBRepo(db)
 	friendController := controllers.NewFriendController(dbRepo)
+
+	logger := httplog.NewLogger("friend-management", httplog.Options{
+		LogLevel: "trace",
+	})
+	r.Use(httplog.RequestLogger(logger))
 
 	r.Route("/v1", func(route chi.Router) {
 		//route.Get("/users", friendController.GetUsers)
