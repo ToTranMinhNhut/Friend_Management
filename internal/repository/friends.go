@@ -26,7 +26,7 @@ func (_self DBRepo) GetFriendsByID(ctx context.Context, userId int) (models.Frie
 	).All(ctx, _self.Db)
 }
 
-// Get blocked user relationship slice from userblock table by user id
+// Get blocked user relationship slice from user_blocks table by user id
 func (_self DBRepo) GetUserBlocksByID(ctx context.Context, userId int) (models.UserBlockSlice, error) {
 	return models.UserBlocks(
 		qm.Select(models.UserBlockColumns.RequestorID, models.UserBlockColumns.TargetID),
@@ -43,7 +43,7 @@ func (_self DBRepo) CreateSubscription(ctx context.Context, requestorId int, tar
 	return subscription.Insert(ctx, _self.Db, boil.Infer())
 }
 
-// Get users slice (who are not blocked by sender) from user
+// Get users slice (who are not blocked by sender) by user id
 func (_self DBRepo) GetRecipientEmails(ctx context.Context, senderId int) ([]models.User, error) {
 	query := `SELECT DISTINCT val.email FROM (
 	        SELECT u.id, u.email
@@ -68,7 +68,7 @@ func (_self DBRepo) GetRecipientEmails(ctx context.Context, senderId int) ([]mod
 	return nonBlockUsers, nil
 }
 
-// Insert a blocking relationship of users into user_block table
+// Insert a blocking relationship of users into user_blocks table
 func (_self DBRepo) CreateUserBlock(ctx context.Context, requestorId int, targetId int) error {
 	userBlock := models.UserBlock{
 		RequestorID: requestorId,

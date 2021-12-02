@@ -173,7 +173,6 @@ func (_self FriendController) GetCommonFriends(w http.ResponseWriter, r *http.Re
 // Create a subscription relationship of users
 func (_self FriendController) CreateSubcription(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
-	//Decode request body
 	requestorReq := RequestorRequest{}
 	if err := json.NewDecoder(r.Body).Decode(&requestorReq); err != nil {
 		Respond(w, http.StatusBadRequest, MsgError(ErrBodyRequestInvalid))
@@ -186,7 +185,7 @@ func (_self FriendController) CreateSubcription(w http.ResponseWriter, r *http.R
 		return
 	}
 
-	// Get user id and friend id from repository
+	// Get requestor id and user target id from repository
 	requestorId, err := _self.Repo.GetUserIDByEmail(ctx, requestorReq.Requestor)
 	if err != nil {
 		Respond(w, http.StatusInternalServerError, MsgError(fmt.Errorf("%s is not exists", requestorReq.Requestor)))
@@ -226,7 +225,6 @@ func (_self FriendController) CreateSubcription(w http.ResponseWriter, r *http.R
 		return
 	}
 
-	// Response
 	Respond(w, http.StatusOK, MsgOK())
 }
 
@@ -245,7 +243,7 @@ func (_self FriendController) CreateUserBlock(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	// Get user id and friend id from repository
+	// Get requestor id and user target id from repository
 	requestorId, err := _self.Repo.GetUserIDByEmail(ctx, requestorReq.Requestor)
 	if err != nil {
 		Respond(w, http.StatusInternalServerError, MsgError(fmt.Errorf("%s is not exists", requestorReq.Requestor)))
@@ -274,9 +272,7 @@ func (_self FriendController) CreateUserBlock(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	// Response
 	Respond(w, http.StatusOK, MsgOK())
-
 }
 
 // Get all of recipients who are friend, subscriber, and mention user without blocking by user
@@ -316,7 +312,7 @@ func (_self FriendController) GetRecipientEmails(w http.ResponseWriter, r *http.
 		existedEmailsMap[user.Email] = true
 	}
 
-	//Add mentionedEmails to result
+	//Add mentioned emails to result
 	mentionedEmails := GetMentionedEmailFromText(recipient.Text)
 	for _, email := range mentionedEmails {
 		if _, ok := existedEmailsMap[email]; !ok {
@@ -351,7 +347,7 @@ func (_self FriendController) GetUsers(w http.ResponseWriter, r *http.Request) {
 
 // Get emails of users who are not being blocked by user
 func (_self FriendController) getFriendEmailsWithoutBlocking(ctx context.Context, userId int) ([]string, error) {
-	// get friends
+	// get friends by user id
 	friendSlice, err := _self.Repo.GetFriendsByID(ctx, userId)
 	if err != nil {
 		return nil, err
@@ -366,7 +362,7 @@ func (_self FriendController) getFriendEmailsWithoutBlocking(ctx context.Context
 		}
 	}
 
-	//Get list friends who have blocked user
+	//Get list users who have blocked user
 	userBlocksSlice, err := _self.Repo.GetUserBlocksByID(ctx, userId)
 	if err != nil {
 		return nil, err
