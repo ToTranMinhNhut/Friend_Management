@@ -12,11 +12,6 @@ CURL app with Go and Postgresql
 ## Run test
 - Run command `make test`
 
-## Teardown
-```
-make teardown
-```
-
 ## API information
 1 - Get users
 - GET: http://localhost:8080/v1/users
